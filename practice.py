@@ -18,6 +18,7 @@ def show_catalogue(products):
             f"ID:{product['id']} | {product['name']:<15} | ${product['price']:<8} | {product['category']:<13} | {status}")
     print("========================================")
 
+
 def get_in_stock(products):
     print("\n____In Stock Only____")
     available = [product["name"]
@@ -26,6 +27,7 @@ def get_in_stock(products):
 
 
 def find_by_category(products, category):
+    print(f"\n____{category}____")
     return [product["name"] for product in products if product["category"] == category]
 
 
