@@ -61,5 +61,12 @@
         "price": 40.99,
         "category": "Accessories",
         "in_stock": true
+    },
+    {
+        "id": 10,
+        "name": "Webcam",
+        "price": 40.99,
+        "category": "Accessories",
+        "in_stock": true
     }
 ]
