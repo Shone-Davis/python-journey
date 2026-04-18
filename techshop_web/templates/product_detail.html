@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1> Product Details</h1>
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% else %}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Status</th>
+    </tr>
+    <tr>
+        <td>{{product.name}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.category}}</td>
+        <td>
+            {% if product.in_stock %}
+            In Stock
+            {% else %}
+            Out of stock
+            {% endif %}
+        </td>
+    </tr>
+</table>
+{% endif %}
+<br>
+<a href="{{url_for('all_products')}}">Products</a>
+{% endblock %}

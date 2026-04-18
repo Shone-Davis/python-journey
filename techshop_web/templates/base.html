@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NEXABYTE</title>
+    <style>
+        body {
+            font-family: Arial;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        nav {
+            padding: 10px 0;
+            border-bottom: 2px solid #333;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="{{url_for('homepage')}}">Home</a>
+        <a href="{{url_for('all_products')}}">Products</a>
+        <a href="{{url_for('description')}}">About</a>
+    </nav>
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        <p>© 2026 NEXABYTE</p>
+    </footer>
+</body>
+
+</html>

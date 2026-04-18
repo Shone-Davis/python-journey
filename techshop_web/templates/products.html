@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1> NEXABYTE - ALL PRODUCTS</h1>
+<p>{{ products|length }} items available</p>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Status</th>
+    </tr>
+    {% for product in products %}
+    <tr>
+        <td>
+            <a href="{{url_for('detail_search', id=product.id)}}">{{product.name}}</a>
+        </td>
+        <td>${{product.price}}</td>
+        <td>{{product.category}}</td>
+        <td>
+            {% if product.in_stock %}
+            <span style="color:green;">In Stock</span>
+            {% else%}
+            <span style="color: red;">Out of stock</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
