@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+{% if query %}
+<h3>Results for "{{query}}"</h3>
+
+{% if results %}
+<p>{{ results | length}} products found</p>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Status</th>
+    </tr>
+    {% for product in results %}
+    <tr>
+        <td>
+            <a href="{{url_for('detail_search', id= product.id)}}">
+                {{product.name}}
+            </a>
+        </td>
+        <td>{{product.price}}</td>
+        <td>{{product.category}}</td>
+        <td>
+            {% if product.in_stock %}
+            <span style="color:green;">In Stock</span>
+            {% else %}
+            <span style="color:red;">Out of Stock</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p style="color:red;">No products found for "{{query}}"</p>
+{% endif %}
+{% endif %}
+{% endblock %}

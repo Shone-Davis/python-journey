@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Add New Product</h2>
+{% if error %}
+<p style="color : red;">{{error}}</p>
+{% endif %}
+<form action="/add-product" method="POST">
+
+    <label>Product Name : </label>
+    <input type="text" name="name" placeholder="Enter name">
+
+    <label>Price : </label>
+    <input type="number" name="price" step="0.01" min="0.99" placeholder="0.00">
+
+    <label>Category : </label>
+    <select name="category">
+        <option value="">---Select Category---</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Accessories">Accessories</option>
+        <option value="Audio">Audio</option>
+    </select>
+    <label>In Stock : </label>
+    <input type="checkbox" name="in_stock" checked>
+    <br>
+    <button type="submit">Add Product</button>
+
+</form>
+{% endblock %}
