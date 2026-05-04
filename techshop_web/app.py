@@ -1,18 +1,71 @@
 import json
 import os
+from functools import wraps
+from flask import session
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 app = Flask(__name__)
+app.secret_key = "nexabyte_secret_key_##20"
 
-products = [
-    {"id": 1, "name": "Laptop",   "price": 899.99,
-        "category": "Electronics", "in_stock": True},
-    {"id": 2, "name": "Mouse",    "price": 19.99,
-        "category": "Electronics", "in_stock": True},
-    {"id": 3, "name": "Monitor",  "price": 299.99,
-        "category": "Accessories", "in_stock": False},
-    {"id": 4, "name": "Keyboard", "price": 199.99,
-        "category": "Accessories", "in_stock": True},
-]
+ADMIN_USERNAME = "bothers"
+ADMIN_PASSWORD = "nexabyte&22"
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    error = None
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session["logged_in"] = True  # saving to session
+            session["username"] = username  # save username
+            return redirect(url_for('homepage'))
+        else:
+            error = "Invalid username and password!"
+    return render_template("login.html", error=error)
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for('homepage'))
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not session.get("logged_in"):
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated
+
+
+def save_products():
+    try:
+        with open("products.json", "w") as f:
+            json.dump(products, f, indent=4)
+    except Exception as e:
+        print(f"Error saving the product:{e}")
+
+
+def load_products():
+    if os.path.exists("products.json"):
+        with open("products.json", "r") as f:
+            return json.load(f)
+    return [
+        {"id": 1, "name": "Laptop",   "price": 899.99,
+         "category": "Electronics", "in_stock": True},
+        {"id": 2, "name": "Mouse",    "price": 19.99,
+         "category": "Electronics", "in_stock": True},
+        {"id": 3, "name": "Monitor",  "price": 299.99,
+         "category": "Accessories", "in_stock": False},
+        {"id": 4, "name": "Keyboard", "price": 199.99,
+         "category": "Accessories", "in_stock": True},
+    ]
+
+
+products = load_products()
 
 
 @app.route("/")
@@ -44,6 +97,7 @@ def api_products():
 
 
 @app.route("/add-product", methods=["GET", "POST"])
+@login_required
 def add_product():
     error = None
     if request.method == "POST":
@@ -86,6 +140,7 @@ def search():
 
 
 @app.route("/delete/<int:product_id>", methods=["POST"])
+@login_required
 def delete_product(product_id):
     result = next((p for p in products if p["id"] == product_id), None)
     if result:

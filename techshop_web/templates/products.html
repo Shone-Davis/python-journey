@@ -8,7 +8,6 @@
         <th>Price</th>
         <th>Category</th>
         <th>Status</th>
-        <th>Action</th>
     </tr>
     {% for product in products %}
     <tr>
@@ -25,15 +24,19 @@
             {% endif %}
         </td>
         <td>
+            {% if session.get("logged_in") %}
             <form action="/delete/{{product.id}}" method="POST" style="display:inline;">
                 <button type="submit" onclick="return confirm('Delete this product ?')">
                     Delete
                 </button>
             </form>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
 </table>
 <br>
+{% if session.get("logged_in") %}
 <a href="{{url_for('add_product')}}" style="color:rgb(255, 217, 0);">Add New Product</a>
+{% endif %}
 {% endblock %}
